@@ -69,7 +69,6 @@ long long minSecondaryParallelSum(const long long *matrix, long long rows,
   long long minimum = 0;
 
   for (long long diagonal = 0; diagonal <= rows + cols - 2; ++diagonal) {
-    // Exclude the secondary diagonal itself.
     if (diagonal == cols - 1) {
       continue;
     }
@@ -171,8 +170,8 @@ int run(int argc, char **argv) {
       return argument_error;
     }
   } else {
-    long long *matrix = new (std::nothrow) long long[count];
-    long long *transformed = new (std::nothrow) long long[count];
+    long long *const matrix = new (std::nothrow) long long[count];
+    long long *const transformed = new (std::nothrow) long long[count];
 
     if (count > 0 && (matrix == nullptr || transformed == nullptr)) {
       delete[] matrix;
