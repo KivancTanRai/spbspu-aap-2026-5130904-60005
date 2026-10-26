@@ -251,6 +251,7 @@ namespace tanriverdikivanc
   }
 }
 
+// Entry point for P3 matrix variants.
 int main(int argc, char ** argv)
 {
   return tanriverdikivanc::run(argc, argv);
