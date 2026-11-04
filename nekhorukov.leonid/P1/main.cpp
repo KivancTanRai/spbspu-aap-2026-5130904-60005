@@ -24,6 +24,9 @@ namespace nekhorukov
     std::size_t cur_len = 0;
     std::size_t best_len = 0;
 
+    bool len_overflow = false;
+    bool count_overflow = false;
+
     while (in >> curr)
     {
       if (curr == 0)
@@ -35,7 +38,6 @@ namespace nekhorukov
       {
         cur_len = 1;
         best_len = 1;
-        first = false;
       }
       else
       {
@@ -43,13 +45,15 @@ namespace nekhorukov
         {
           if (cur_len == std::numeric_limits< std::size_t >::max())
           {
-            std::cerr << "overflow\n";
-            return kCalcError;
+            len_overflow = true;
           }
-          ++cur_len;
-          if (cur_len > best_len)
+          else
           {
-            best_len = cur_len;
+            ++cur_len;
+            if (cur_len > best_len)
+            {
+              best_len = cur_len;
+            }
           }
         }
         else
@@ -67,13 +71,16 @@ namespace nekhorukov
       {
         if (min_count == std::numeric_limits< std::size_t >::max())
         {
-          std::cerr << "overflow\n";
-          return kCalcError;
+          count_overflow = true;
         }
-        ++min_count;
+        else
+        {
+          ++min_count;
+        }
       }
 
       prev = curr;
+      first = false;
     }
 
     if (in.fail())
@@ -89,8 +96,29 @@ namespace nekhorukov
       return kSuccess;
     }
 
-    std::cout << best_len << "\n";
-    std::cout << min_count << "\n";
+    if (len_overflow)
+    {
+      std::cerr << "overflow in length\n";
+    }
+    else
+    {
+      std::cout << best_len << "\n";
+    }
+
+    if (count_overflow)
+    {
+      std::cerr << "overflow in count\n";
+    }
+    else
+    {
+      std::cout << min_count << "\n";
+    }
+
+    if (len_overflow || count_overflow)
+    {
+      return kCalcError;
+    }
+
     return kSuccess;
   }
 }
